@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Precise automation Interview</string>
+    <string name="locfile">Location Data will be saved at locationfile.txt file in root directory</string>
 </resources>

@@ -6,21 +6,33 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.nfc.NfcAdapter;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     Button btnShowLocation;
+    NfcAdapter nfcAdapter;
+
     private static final int REQUEST_CODE_PERMISSION = 2;
+    private static final int REQUEST_CODE_PERMISSION2 = 3;
     String mPermission = Manifest.permission.ACCESS_FINE_LOCATION;
+    String StPermission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+    TextView locationfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        locationfile=findViewById(R.id.locationfile);
+        locationfile.setText(R.string.locfile);
+
 
 
 
@@ -32,9 +44,12 @@ public class MainActivity extends AppCompatActivity {
                         REQUEST_CODE_PERMISSION);
 
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
 
         btnShowLocation = (Button) findViewById(R.id.button);
         final Intent intent= new Intent(this, ServiceTest.class);
@@ -45,28 +60,25 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
 
+                try {
+                    if (ActivityCompat.checkSelfPermission(getApplicationContext(), StPermission)
+                            != PackageManager.PERMISSION_GRANTED) {
+
+                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{StPermission},
+                                REQUEST_CODE_PERMISSION2);
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 startService(intent);
-              /*  // create class object
-                gps = new GPSTracker(MainActivity.this);
-
-                // check if GPS enabled
-                if(gps.canGetLocation()){
-
-                    double latitude = gps.getLatitude();
-                    double longitude = gps.getLongitude();
-
-                    // \n is for new line
-                    Toast.makeText(getApplicationContext(), "Your Location is - \nLat: "
-                            + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
-                }else{
-                    // can't get location
-                    // GPS or Network is not enabled
-                    // Ask user to enable GPS/network in settings
-                    gps.showSettingsAlert();
-                }*/
 
             }
         });
+
+
+
     }
 
 }

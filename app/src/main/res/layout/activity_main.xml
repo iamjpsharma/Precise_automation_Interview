@@ -6,7 +6,13 @@
     <Button
         android:id = "@+id/button"
         android:layout_width = "fill_parent"
+        android:textAllCaps="false"
         android:layout_height = "wrap_content"
-        android:text = "getlocation"/>
+        android:text = "Start Service Location"/>
+
+    <TextView
+        android:id="@+id/locationfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>
